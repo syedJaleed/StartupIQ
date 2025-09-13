@@ -1,0 +1,38 @@
+<div class="min-h-screen bg-base-200">
+  <header class="fixed top-0 left-0 right-0 z-50 border-b-1 border-b-base-300 bg-base-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+            <p class="px-4 text-lg font-bold flex items-center gap-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" class="w-10 h-10 text-primary"
+                    fill="currentColor">
+                    <path
+                        d="M184 120C184 89.1 209.1 64 240 64L264 64C281.7 64 296 78.3 296 96L296 544C296 561.7 281.7 576 264 576L232 576C202.2 576 177.1 555.6 170 528C169.3 528 168.7 528 168 528C123.8 528 88 492.2 88 448C88 430 94 413.4 104 400C84.6 385.4 72 362.2 72 336C72 305.1 89.6 278.2 115.2 264.9C108.1 252.9 104 238.9 104 224C104 179.8 139.8 144 184 144L184 120zM456 120L456 144C500.2 144 536 179.8 536 224C536 239 531.9 253 524.8 264.9C550.5 278.2 568 305 568 336C568 362.2 555.4 385.4 536 400C546 413.4 552 430 552 448C552 492.2 516.2 528 472 528C471.3 528 470.7 528 470 528C462.9 555.6 437.8 576 408 576L376 576C358.3 576 344 561.7 344 544L344 96C344 78.3 358.3 64 376 64L400 64C430.9 64 456 89.1 456 120z" />
+                </svg> StartupIQ</p>
+    <div class="flex items-center">
+        <nav class="hidden md:flex items-center justify-around space-x-4">
+      <p class="px-4 cursor-pointer hover:text-primary">About</p>
+      <p class="px-4 cursor-pointer hover:text-primary">Connect</p>
+       <p class="px-4 cursor-pointer hover:text-primary">Login</p>
+    </nav>
+      <div class="md:hidden dropdown dropdown-end">
+        <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </div>
+        <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+          <li><a>About</a></li>
+          <li><a>Connect</a></li>
+          <li><a>Login</a></li>
+        </ul>
+      </div>
+    </div>
+        </div>
+
+    </div>
+    
+  </header>
+  <div class="pt-16">
+  <router-outlet></router-outlet>
+    
+  </div>
+</div>
