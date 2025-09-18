@@ -5,12 +5,14 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './dashboard.component';
 import { MainDashComponent } from './main-dash/main-dash.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ProjectAnalysisComponent } from './project-analysis/project-analysis.component';
 
 
 @NgModule({
   declarations: [
     DashboardComponent,
-    MainDashComponent
+    MainDashComponent,
+    ProjectAnalysisComponent
   ],
   imports: [
     CommonModule,

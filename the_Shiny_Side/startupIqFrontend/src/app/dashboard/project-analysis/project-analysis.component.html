@@ -1,0 +1,100 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="space-y-8" *ngIf="project">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <button (click)="navDashboard()"
+                    class="btn border-none p-2 hover:bg-base-content/10 rounded-lg transition-colors">
+                    <i class="bi bi-arrow-left"></i>
+                </button>
+                <div>
+                    <h1 class="text-3xl font-bold text-base-content/90">{{ project.companyInfo?.name }}</h1>
+                    <p class="text-base-content/60">{{ project.companyInfo?.industry }} · {{
+                        project.companyInfo?.fundingStage }}</p>
+                </div>
+            </div>
+            <div class="flex space-x-3">
+                <button (click)="openDropBox()" class="btn bg-primary/80 text-base-100 rounded-lg"><i
+                        class="bi bi-upload mr-1"></i>Upload
+                    File</button>
+            </div>
+        </div>
+        <div *ngIf="dropBoxOpen" class="bg-base-100 rounded-xl p-4 shadow-sm border border-base-content/20">
+            <div class="flex items-center justify-between">
+                <h3 class="text-xl font-semibold">Upload Startup Materials</h3>
+                <button class="btn btn-sm btn-circle btn-ghost" (click)="openDropBox()">✕</button>
+            </div>
+            <div class="mt-6 border-2 border-dashed rounded-lg p-6 text-center cursor-pointer hover:bg-base-200"
+                (click)="fileInput.click()" (drop)="onFileDrop($event)" (dragover)="onDragOver($event)">
+                <input type="file" multiple hidden #fileInput (change)="onFilesSelected($event)" />
+                <div class="flex flex-col items-center space-y-2">
+                    <svg class="w-12 h-12 text-primary" fill="none" stroke="currentColor" stroke-width="2"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M7 16a4 4 0 01-.88-7.903A5.002 5.002 0 0115 6h1a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                    </svg>
+                    <p class="text-sm text-base-content">
+                        Drop files here or click to upload
+                    </p>
+                    <p class="text-xs text-base-content/70">
+                        Supports PDF pitch decks, DOCX updates, TXT transcripts, and MP3 audio
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="mt-6" *ngIf="uploadedFiles.length > 0">
+            <div class="flex justify-between items-center mb-6">
+                <h4 class="font-semibold mb-3">Uploaded Files</h4>
+                <button (click)="saveFiles()" class="btn border-none hover:bg-base-content/20 rounded-lg"
+                    [disabled]="uploadedFiles.length === 0">
+                    Save Files <i class="bi bi-arrow-right"></i>
+                </button>
+            </div>
+
+            <div class="overflow-y-auto max-h-60">
+                <div *ngFor="let file of uploadedFiles; let i = index"
+                    class="flex items-center p-3 mb-2 rounded-lg bg-base-300">
+                    <!-- File Icon -->
+                    <svg class="w-8 h-8 text-primary mr-3" fill="none" stroke="currentColor" stroke-width="2"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M7 21h10a2 2 0 002-2V9.414a2 2 0 00-.586-1.414l-4.414-4.414A2 2 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                    </svg>
+
+                    <!-- File Info -->
+                    <div class="flex-1">
+                        <p class="text-sm font-medium truncate">{{ file.name }}</p>
+                        <p class="text-xs text-base-content/70">
+                            {{ getFileSize(file.size) }}
+                        </p>
+                    </div>
+
+                    <!-- Remove Button -->
+                    <button type="button" class="btn btn-xs btn-error bg-error/20 border-none shadow-none"
+                        (click)="removeFile(i)">
+                        <i class="bi bi-trash text-error"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="mt-8" *ngIf="savedFiles.length > 0">
+            <h4 class="font-semibold mb-3">Files in Project</h4>
+            <div class="space-y-2 max-h-60 overflow-y-auto">
+                <div *ngFor="let file of savedFiles" class="flex items-center p-3 rounded-lg bg-base-200">
+                    <svg class="w-6 h-6 text-primary mr-3" fill="none" stroke="currentColor" stroke-width="2"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M7 21h10a2 2 0 002-2V9.414a2 2 0 00-.586-1.414l-4.414-4.414A2 2 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                    </svg>
+
+                    <a [href]="file" target="_blank">
+                    {{ getFileNameFromUrl(file) }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="!project" class="text-red-500">
+    Project not found.
+</div>

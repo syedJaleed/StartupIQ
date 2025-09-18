@@ -4,167 +4,79 @@
         <dialog id="projectDetailsModal" class="modal">
             <div class="modal-box w-11/12 max-w-2xl">
                 <!-- Header -->
-                <div class="flex items-center justify-between">
+                <div class="flex items-center justify-between mb-4">
                     <h3 class="text-xl font-semibold">New Startup Details</h3>
                     <form method="dialog">
                         <button class="btn btn-sm btn-circle btn-ghost">✕</button>
                     </form>
                 </div>
-                <div>
-                    <section>
-                        <p>Basic Info</p>
+
+                <form [formGroup]="projectForm" (submit)="saveDetails()">
+                    <section class="space-y-4">
+                        <p class="font-medium text-base-content/80">Basic Info</p>
+
                         <div>
-                            <div>
-                                <label class="label">Company Name</label>
+                            <div class="flex items-center gap-2">
+                                <i class="bi bi-building text-gray-500"></i>
                                 <input placeholder="Company Name" class="input input-bordered w-full"
-                                    [(ngModel)]="projectDetails.companyInfo.name" />
+                                    formControlName="name" />
                             </div>
-                            <div>
-                                <label class="label">Industry</label>
+                            <div class="text-red-500 text-sm mt-1"
+                                *ngIf="projectForm.get('name')?.touched && projectForm.get('name')?.invalid">
+                                Company Name is required
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <i class="bi bi-diagram-3 text-gray-500"></i>
                                 <input placeholder="Industry" class="input input-bordered w-full"
-                                    [(ngModel)]="projectDetails.companyInfo.industry" />
+                                    formControlName="industry" />
                             </div>
-                            <div>
-                                <label class="label">Funding Stage</label>
+                            <div class="text-red-500 text-sm mt-1"
+                                *ngIf="projectForm.get('industry')?.touched && projectForm.get('industry')?.invalid">
+                                Industry is required
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <i class="bi bi-cash-stack text-gray-500"></i>
                                 <input placeholder="Funding Stage" class="input input-bordered w-full"
-                                    [(ngModel)]="projectDetails.companyInfo.fundingStage" />
+                                    formControlName="fundingStage" />
                             </div>
-                            <div>
-                                <label class="label">Description</label>
+                            <div class="text-red-500 text-sm mt-1"
+                                *ngIf="projectForm.get('fundingStage')?.touched && projectForm.get('fundingStage')?.invalid">
+                                Funding Stage is required
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <i class="bi bi-card-text text-gray-500"></i>
                                 <input placeholder="Description" class="input input-bordered w-full"
-                                    [(ngModel)]="projectDetails.companyInfo.tagline" />
+                                    formControlName="tagline" />
+                            </div>
+                            <div class="text-red-500 text-sm mt-1"
+                                *ngIf="projectForm.get('tagline')?.touched && projectForm.get('tagline')?.invalid">
+                                Description is required
                             </div>
                         </div>
                     </section>
-                    <section>
-                        <p>BPerformance Metrics</p>
-                        <div>
-                            <div>
-                                <label class="label">Revenue (USD)</label>
-                                <input placeholder="Revenue (USD)" class="input input-bordered w-full"
-                                    [(ngModel)]="projectDetails.performanceMetrics.revenue" />
-                            </div>
-                            <div>
-                                <label class="label">Revenue Growth (%)</label>
-                                <input placeholder="Revenue Growth (%)" class="input input-bordered w-full"
-                                    [(ngModel)]="projectDetails.performanceMetrics.revenueGrowth" />
-                            </div>
-                            <div>
-                                <label class="label">Users</label>
-                                <input placeholder="Users" class="input input-bordered w-full"
-                                    [(ngModel)]="projectDetails.performanceMetrics.users" />
-                            </div>
-                            <div>
-                                <label class="label">User Growth (%)</label>
-                                <input placeholder="User Growth (%)" class="input input-bordered w-full"
-                                    [(ngModel)]="projectDetails.performanceMetrics.userGrowth" />
-                            </div>
-                        </div>
-                    </section>
-                    <section>
-                        <p>Scoring</p>
-                        <div>
-                            <div>
-                                <label class="label">Score (1–10)</label>
-                                <input placeholder="Score (1–10)" class="input input-bordered w-full"
-                                    [(ngModel)]="projectDetails.scoring.score" />
-                            </div>
-                        </div>
-                    </section>
-                    <section>
-                        <p>Additional Info</p>
-                        <div>
-                            <div>
-                                <label class="label">Last Updated Date</label>
-                                <input placeholder="Last Updated Date" class="input input-bordered w-full"
-                                    [(ngModel)]="projectDetails.additionalInfo.lastUpdated" />
-                            </div>
-                        </div>
-                    </section>
-                </div>
-                <div class="modal-action">
-                    <form method="dialog">
-                        <!-- if there is a button in form, it will close the modal -->
-                        <button class="btn" (click)="saveDetails()">Save</button>
-                    </form>
-                </div>
-            </div>
 
-            <form method="dialog" class="modal-backdrop">
-                <button>close</button>
-            </form>
-        </dialog>
-        <dialog id="files_modal" class="modal">
-            <div class="modal-box w-11/12 max-w-2xl">
-                <!-- Header -->
-                <div class="flex items-center justify-between">
-                    <h3 class="text-xl font-semibold">Upload Startup Materials</h3>
-                    <form method="dialog">
-                        <button class="btn btn-sm btn-circle btn-ghost">✕</button>
-                    </form>
-                </div>
-
-                <!-- Upload Area -->
-                <div class="mt-6 border-2 border-dashed rounded-lg p-6 text-center cursor-pointer hover:bg-base-200"
-                    (click)="fileInput.click()" (drop)="onFileDrop($event)" (dragover)="onDragOver($event)">
-                    <input type="file" multiple hidden #fileInput (change)="onFilesSelected($event)" />
-                    <div class="flex flex-col items-center space-y-2">
-                        <svg class="w-12 h-12 text-primary" fill="none" stroke="currentColor" stroke-width="2"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M7 16a4 4 0 01-.88-7.903A5.002 5.002 0 0115 6h1a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                        </svg>
-                        <p class="text-sm text-base-content">
-                            Drop files here or click to upload
-                        </p>
-                        <p class="text-xs text-base-content/70">
-                            Supports PDF pitch decks, DOCX updates, TXT transcripts, and MP3 audio
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Uploaded Files Section -->
-                <div class="mt-6" *ngIf="uploadedFiles.length > 0">
-                    <h4 class="font-semibold mb-3">Uploaded Files</h4>
-                    <div class="overflow-y-auto max-h-60">
-                        <div *ngFor="let file of uploadedFiles; let i = index"
-                            class="flex items-center p-3 mb-2 rounded-lg bg-base-200">
-                            <!-- File Icon -->
-                            <svg class="w-8 h-8 text-primary mr-3" fill="none" stroke="currentColor" stroke-width="2"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M7 21h10a2 2 0 002-2V9.414a2 2 0 00-.586-1.414l-4.414-4.414A2 2 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                            </svg>
-
-                            <!-- File Info -->
-                            <div class="flex-1">
-                                <p class="text-sm font-medium truncate">{{ file.name }}</p>
-                                <p class="text-xs text-base-content/70">
-                                    {{ getFileSize(file.size) }}
-                                </p>
-                            </div>
-
-                            <!-- Remove Button -->
-                            <button type="button" class="btn btn-xs btn-error bg-error/20 border-none shadow-none"
-                                (click)="removeFile(i)">
-                                <i class="bi bi-trash text-error"></i>
+                    <div class="modal-action mt-6">
+                            <button class="btn btn-primary" type="submit" [disabled]="projectForm.invalid">
+                                <i class="bi bi-check2-circle mr-2"></i> Save
                             </button>
-                        </div>
                     </div>
-                </div>
-
-                <!-- Footer -->
-                <div class="mt-6 flex justify-end">
-                    <button class="btn bg-primary/80 text-base-100 rounded-lg" [disabled]="uploadedFiles.length === 0">
-                        Start Analysis
-                    </button>
-                </div>
+                </form>
             </div>
 
             <form method="dialog" class="modal-backdrop">
                 <button>close</button>
             </form>
         </dialog>
+
         <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
             <div>
                 <p class="text-3xl font-bold">Investment Analysis Dashboard</p>
@@ -174,9 +86,8 @@
                 <button type="button"
                     class="btn border-none bg-base-content/2 hover:bg-base-content/6 font-normal text-base text-base-content/80 rounded-lg"><i
                         class="bi bi-funnel mr-1"></i>Analysis Weights</button>
-                <button class="btn bg-primary/80 text-base-100 rounded-lg" onclick="files_modal.showModal()"><i
-                        class="bi bi-upload mr-1"></i>New
-                    Analysis</button>
+                <button class="btn bg-primary/80 text-base-100 rounded-lg" onclick="projectDetailsModal.showModal()"><i
+                        class="bi bi-plus mr-1"></i>Add Project</button>
             </div>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -224,11 +135,37 @@
                             <path d="m21 21-4.3-4.3"></path>
                         </g>
                     </svg>
-                    <input type="search" class="grow text-base-content/70" placeholder="Search" />
+                    <input #searchBox type="search" class="grow text-base-content/70" placeholder="Search" (input)="onSearch(searchBox.value)" />
                 </label>
             </div>
             <div class="text-sm text-base-content/60">
-                <span>2 of 2 startups</span>
+                <span>{{ filteredProjects.length }} of {{ projects.length }} startups</span>
+            </div>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+            <div *ngFor="let project of filteredProjects">
+                <div
+                    class="rounded-xl bg-base-100 p-6 shadow-sm border border-base-content/20 transition-all hover:border-base-content/30">
+                    <div class="space-y-4">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <h3 class="text-lg font-semibold text-base-content/90">{{ project.companyInfo?.name }}
+                                </h3>
+                                <p class="text-sm text-base-content/60">{{ project.companyInfo?.industry }}<span><i
+                                            class="bi bi-dot"></i></span> <span>{{ project.companyInfo?.fundingStage
+                                        }}</span></p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-base-content/70 line-clamp-2">{{ project.companyInfo?.tagline }}</p>
+                        <div class="flex items-center justify-between">
+                            <div></div>
+                            <div (click)="goToAnalysis(project.id)" 
+                                class="cursor-pointer flex items-center space-x-1 text-primary text-sm font-medium">
+                                Start Analysis <i class="bi bi-arrow-right mx-1"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

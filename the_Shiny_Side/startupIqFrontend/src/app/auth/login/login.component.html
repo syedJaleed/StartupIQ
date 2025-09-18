@@ -4,7 +4,7 @@
 
         <!-- Left Content -->
         <div class="md:w-1/2 animate-slide-left space-y-6 text-center md:text-left">
-            <h1 class="text-4xl font-semibold text-primary flex items-center gap-2 justify-center md:justify-start">
+            <h1 class="text-4xl font-semibold flex items-center gap-2 justify-center md:justify-start">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" class="w-10 h-10 text-primary"
                     fill="currentColor">
                     <path
@@ -49,29 +49,27 @@
                 Sign in to access your analysis dashboard
             </p>
 
-            <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="space-y-4">
-                <!-- Email -->
+            <!-- <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="space-y-4">
                 <input type="email" formControlName="email" placeholder="Email Address"
                     class="input input-bordered w-full text-sm" />
                 <div *ngIf="email?.invalid && email?.touched" class="text-error text-xs">
                     <span *ngIf="email?.errors?.['required']">Email is required</span>
                     <span *ngIf="email?.errors?.['email']">Enter a valid email</span>
                 </div>
-
-                <!-- Password -->
                 <input type="password" formControlName="password" placeholder="Password"
                     class="input input-bordered w-full text-sm" />
                 <div *ngIf="password?.invalid && password?.touched" class="text-error text-xs">
                     Password is required
                 </div>
-
-                <!-- Button -->
                 <button type="submit" class="btn btn-primary w-full font-medium" [disabled]="loginForm.invalid">
                     Sign In
                 </button>
-            </form>
-
-
+            </form> -->
+            <div class="flex justify-center">
+                <button class="btn btn-primary" type="button" (click)="loginWithGoogle()">
+                    <i class="bi bi-google"></i>Sign up/in with Google
+                </button>
+            </div>
             <p class="mt-4 text-xs text-center text-base-content/50">
                 Demo credentials: Use any email and password to sign in
             </p>
