@@ -13,10 +13,41 @@
                 </div>
             </div>
             <div class="flex space-x-3">
+                <button (click)="applySync()" [disabled]="syncJob && syncJob.status !== 'done'"
+                    class="btn border-none bg-base-content/2 hover:bg-base-content/6 font-normal text-base text-base-content/80 rounded-lg">
+                    <i class="bi bi-arrow-repeat"></i>
+                    Sync
+                </button>
                 <button (click)="openDropBox()" class="btn bg-primary/80 text-base-100 rounded-lg"><i
                         class="bi bi-upload mr-1"></i>Upload
                     File</button>
             </div>
+        </div>
+        <div *ngIf="syncJob" class="mt-6 p-4 bg-base-100 rounded-lg border border-base-content/20">
+            <progress class="progress progress-primary w-full" [value]="syncJob.percentage" max="100"></progress>
+            <p class="mt-2 text-sm text-base-content/70">
+                {{ syncJob.percentage }}% -
+                <span *ngIf="syncJob.status === 'in_progress'">⏳ In Progress</span>
+                <span *ngIf="syncJob.status === 'done'">✅ All Done</span>
+            </p>
+
+            <ul class="steps steps-vertical lg:steps-horizontal w-full mt-6">
+                            <li *ngFor="let step of steps" class="step" [ngClass]="{
+                'step-primary': isStepActive(step.key)
+                }">
+
+                    <span class="flex items-center">
+                        {{ step.label }}
+
+                        <!-- Loader when current step is queued -->
+                        <span *ngIf="syncJob?.current_step === step.key && syncJob?.current_step_status === 'queued'"
+                            class="loading loading-spinner loading-xs ml-2"></span>
+
+                        <!-- Tick mark when completed -->
+                        <i *ngIf="isStepCompleted(step.key)" class="bi bi-check-circle-fill text-success ml-2"></i>
+                    </span>
+                </li>
+            </ul>
         </div>
         <div *ngIf="dropBoxOpen" class="bg-base-100 rounded-xl p-4 shadow-sm border border-base-content/20">
             <div class="flex items-center justify-between">
@@ -87,7 +118,7 @@
                     </svg>
 
                     <a [href]="file" target="_blank">
-                    {{ getFileNameFromUrl(file) }}
+                        {{ getFileNameFromUrl(file) }}
                     </a>
                 </div>
             </div>

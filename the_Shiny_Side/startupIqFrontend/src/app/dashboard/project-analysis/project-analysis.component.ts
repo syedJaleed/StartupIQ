@@ -31,6 +31,14 @@ export class ProjectAnalysisComponent {
   dropBoxOpen = false;
 
   unsubscribe: (() => void) | null = null;
+  syncJob: any = null; // 👈 holds realtime sync job data
+
+  steps = [
+    { key: 'file_analysis', label: 'File Analysis' },
+    { key: 'team_agent', label: 'Team Agent' },
+    { key: 'financial_stats_agent', label: 'Financial Stats Agent' },
+    { key: 'final_agent', label: 'Final Agent' },
+  ];
 
   constructor(
     private route: ActivatedRoute,
@@ -47,13 +55,11 @@ export class ProjectAnalysisComponent {
         this.getProjectDetails(user.uid);
       } else {
         console.error('User not logged in');
-        // this.projects = [];
       }
     });
   }
 
   async getProjectDetails(uid: string) {
-    // 👈 get project ID from URL
     this.projectId = this.route.snapshot.paramMap.get('id');
     const userRef = doc(this.firestore, 'user-data', uid);
     const userSnap = await getDoc(userRef);
@@ -64,14 +70,14 @@ export class ProjectAnalysisComponent {
       this.project = projects.find((p: any) => p.id === this.projectId);
       console.log('Loaded project:', this.project);
       if (this.projectId) {
-        this.listenToFileUpdates(this.projectId); // 👈 start listening for file updates
+        this.listenToFileUpdates(this.projectId);
+        this.listenToSyncJob(this.projectId); // 👈 listen for sync updates
       }
     }
   }
 
   private listenToFileUpdates(projectId: string) {
     const fileDocRef = doc(this.firestore, 'files-map', projectId);
-
     this.unsubscribe = onSnapshot(fileDocRef, (docSnap) => {
       if (docSnap.exists()) {
         const data = docSnap.data();
@@ -79,6 +85,18 @@ export class ProjectAnalysisComponent {
         console.log('Realtime file updates:', this.savedFiles);
       } else {
         this.savedFiles = [];
+      }
+    });
+  }
+
+  private listenToSyncJob(projectId: string) {
+    const syncDocRef = doc(this.firestore, 'sync-job', projectId);
+    onSnapshot(syncDocRef, (docSnap) => {
+      if (docSnap.exists()) {
+        this.syncJob = docSnap.data();
+        console.log('Realtime sync job:', this.syncJob);
+      } else {
+        this.syncJob = null;
       }
     });
   }
@@ -136,22 +154,17 @@ export class ProjectAnalysisComponent {
 
       const fileLinks: string[] = [];
 
-      // ✅ Upload each file to Firebase Storage
       for (const file of this.uploadedFiles) {
         const storagePath = `project-files/${this.projectId}/${Date.now()}-${
           file.name
         }`;
         const storageRef = ref(this.storage, storagePath);
 
-        // Upload file
         await uploadBytes(storageRef, file);
-
-        // Get public download URL
         const downloadURL = await getDownloadURL(storageRef);
         fileLinks.push(downloadURL);
       }
 
-      // ✅ Save file links to Firestore under "files-map/{projectId}"
       const fileDocRef = doc(this.firestore, 'files-map', this.projectId);
       const docSnap = await getDoc(fileDocRef);
 
@@ -160,17 +173,14 @@ export class ProjectAnalysisComponent {
           fileLinks: arrayUnion(...fileLinks),
           lastUpdated: new Date(),
         });
-        console.log('Files updated in Firestore ✅');
       } else {
         await setDoc(fileDocRef, {
           projectId: this.projectId,
           fileLinks,
           uploadedAt: new Date(),
         });
-        console.log('New file document created ✅');
       }
 
-      // Clear local uploads after save
       this.uploadedFiles = [];
     } catch (error) {
       console.error('Error saving files:', error);
@@ -180,15 +190,75 @@ export class ProjectAnalysisComponent {
   navDashboard() {
     this.router.navigate(['dashboard']);
   }
+
   getFileNameFromUrl(url: string): string {
-    const withoutParams = url.split('?')[0]; // remove query params
+    const withoutParams = url.split('?')[0];
     const parts = withoutParams.split('/');
-    return decodeURIComponent(parts[parts.length - 1]); // decode %20, etc.
+    return decodeURIComponent(parts[parts.length - 1]);
+  }
+
+  async applySync() {
+    if (!this.projectId) {
+      console.error('No projectId found');
+      return;
+    }
+    const syncDocRef = doc(this.firestore, 'sync-job', this.projectId);
+
+    const syncData = {
+      current_step: 'file_analysis',
+      current_step_status: 'not_started',
+      id: this.projectId,
+      percentage: 0,
+      status: 'not_started',
+    };
+
+    try {
+      await setDoc(syncDocRef, syncData, { merge: true });
+    } catch (error) {
+      console.error('Error applying sync:', error);
+    }
+  }
+
+  isStepActive(stepKey: string): boolean {
+    if (!this.syncJob) return false;
+
+    // Highlight current step
+    if (this.syncJob.current_step === stepKey) {
+      return true;
+    }
+
+    // If current step is completed, highlight past steps
+    const currentIndex = this.steps.findIndex(
+      (s) => s.key === this.syncJob.current_step
+    );
+    const stepIndex = this.steps.findIndex((s) => s.key === stepKey);
+
+    if (
+      this.syncJob.current_step_status === 'completed' &&
+      stepIndex < currentIndex
+    ) {
+      return true;
+    }
+
+    return false;
+  }
+
+  isStepCompleted(stepKey: string): boolean {
+    if (!this.syncJob) return false;
+
+    const stepIndex = this.steps.findIndex((s) => s.key === stepKey);
+    const currentIndex = this.steps.findIndex(
+      (s) => s.key === this.syncJob.current_step
+    );
+
+    return (
+      stepIndex < currentIndex ||
+      (this.syncJob.current_step === stepKey &&
+        this.syncJob.current_step_status === 'completed')
+    );
   }
 
   ngOnDestroy() {
-    if (this.unsubscribe) {
-      this.unsubscribe();
-    }
+    if (this.unsubscribe) this.unsubscribe();
   }
 }
