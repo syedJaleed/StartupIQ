@@ -1,0 +1,277 @@
+{
+  "startup_id": "ziniosa_nithravya",
+  "ingestion_date": "2025-09-17T12:15:39Z",
+  "documents": [
+    {
+      "doc_id": "lv_founders_checklist",
+      "type": "founders_checklist",
+      "source_url": null,
+      "extracted_on": "2025-09-17T12:15:39Z",
+      "sections": [
+        {
+          "section_title": "Industry and market size",
+          "section_text": "Industry Reports - Added Here; Technology Reports - Added Here."
+        },
+        {
+          "section_title": "Documents to be provided to LV",
+          "section_text": "Pitch Deck - Added Here; Investment Note; MIS - Added Here; 3 years Financial Projections - Added Here; Margin profile; Revenue Streams - Added Here."
+        },
+        {
+          "section_title": "Revenue Streams",
+          "section_text": "Clearly define all sources of revenue. For each stream, include: Name of the Revenue Stream; Description (What is it?, How does it work?); Target Audience (Who is paying?); Percentage Contribution (Share of total revenue if available)."
+        },
+        {
+          "section_title": "Pricing Strategy",
+          "section_text": "Outline the pricing models and tiers. Flat Rate: Fixed pricing for all customers. Tiered Pricing: Different packages based on features or usage levels. Freemium: Basic features free; advanced features paid. Dynamic Pricing: Pricing varies based on demand or other factors. Include details such as: Pricing levels (basic, premium, enterprise); Rationale behind pricing (market research, competitor analysis)."
+        },
+        {
+          "section_title": "Unit Economics",
+          "section_text": "Key metrics for revenue generation. Customer Acquisition Cost (CAC): How much it costs to acquire a customer. Meta CAC - 764; Overall CAC - Rs. 3100. Lifetime Value (LTV): Revenue generated from a customer during their relationship. LTV - 1,27,755. LTV:CAC Ratio: Indicator of profitability."
+        },
+        {
+          "section_title": "Recurring vs. One-Time Revenue",
+          "section_text": "Segregate revenue into: Recurring Revenue: Subscription fees, memberships (NA). One-Time Revenue: Single purchases, setup fees (One-Time Revenue Per Sale)."
+        },
+        {
+          "section_title": "Payment Flow and Terms",
+          "section_text": "How payments are collected and processed. Direct payments, online gateways, invoicing. Payments are collected directly from the website using Payment Gateways, UPI or COD. Payment frequency (monthly, annual, one-time). Payment per purchase. Refund and cancellation policies (if applicable). Once the order is delivered the customer has 24 hours until they can place a return request. Returns are not valid on final sale products."
+        },
+        {
+          "section_title": "Scalability of Revenue Model",
+          "section_text": "How the revenue model will scale as the business grows. Additional Revenue Opportunities: Future revenue streams the startup plans to explore. Mention the assumptions underpinning the revenue projections."
+        },
+        {
+          "section_title": "Competitor Analysis Framework",
+          "section_text": "Added Here (cover 2-3 competitors operating in the similar revenue model or advanced revenue model in comparison to your company). The following table includes categories like Company Name, Headquarters, Founding Year, Total Funding Raised, etc."
+        },
+        {
+          "section_title": "Founders Profile",
+          "section_text": "Education: Ashri Jaiswal (B.tech in IT - Jaypee Institute of Information Technology, Noida; Master’s in Engineering Management - The George Washington University, Washington DC), Varun Ramani (B.E in EC - MVJ College of Engineering, Bangalore). Work experience: Ashri Jaiswal (Project Management Analyst in the US and India, 3 years experience; Guest Mentor & Coach with UN Women; TedX Speaker). Varun Ramani (Systems Integration Engineer in the US with Philips and Keithley Instruments). Details of previous founded companies & status: Ziniosa. ESOPs: NA. Investments done by Founder: NOTO - Ashri Jaiswal; Gladful - Ashri Jaiswal. Litigations: NA."
+        },
+        {
+          "section_title": "Financials",
+          "section_text": "Included in the MIS. Attached Here. MRR, ARR, Burn, Runway, Gross Margin, CM1%, CM 2%, CM 3%."
+        },
+        {
+          "section_title": "Facilities",
+          "section_text": "Office details; Plant details; Warehouses."
+        },
+        {
+          "section_title": "Technology",
+          "section_text": "Write up on Tech stack. Website is built on Shopify. Partners: NA. IP: NA. IP location / Owner: NA."
+        },
+        {
+          "section_title": "Captable",
+          "section_text": "Current Captable: 50% - Ashri Jaiswal; 50% - Varun Ramani. New Proposed Captable. Details of previous funding round: NA - Bootstrapped."
+        },
+        {
+          "section_title": "Customers",
+          "section_text": "Will share during DD. List of top 10 customers; Call with 3 customers."
+        },
+        {
+          "section_title": "Fundraiser",
+          "section_text": "Total funding details till date: NA - Bootstrapped. List of current investors: NA - Bootstrapped."
+        },
+        {
+          "section_title": "Valuation",
+          "section_text": "Valuation rational - Rs. 13.5 Cr pre-money valuation in mutual agreement with IPV for the current Rs. 2.5 Cr round."
+        },
+        {
+          "section_title": "Round structure",
+          "section_text": "Terms: CCPS. Pre-Money Valuation - Rs. 13.5 Cr. Lead: IPV. Incoming Investors: IPV. Existing Investors: NA - Bootstapped."
+        },
+        {
+          "section_title": "Competition",
+          "section_text": "Top 3 competitors: MyAlmari, Confidential Couture, Luxepolis. Total funding raised by them: NA. Investors on their captable: NA. Business model: Preloved/Consignment Based Model. Margin profile: NA. ARR (shared by IPV from Tracxn): Confidential Couture - 2.81 Cr (FY23); Luxepolis - 2.62 Cr (FY 23). Valuation: NA."
+        },
+        {
+          "section_title": "Basic Details",
+          "section_text": "Company Name - Ziniosa (Nithravya Pvt Ltd). Website - www.ziniosa.com. Industry - E-commerce. Category - Resale."
+        },
+        {
+          "section_title": "Overview",
+          "section_text": "Elevator Pitch: Ziniosa—India’s Leading & Fastest-Growing Fashion Resale Service. We’re solving fashion’s biggest challenges—affordability, sustainability, and accessibility—through a data-driven resale model that allows customers to buy and consign luxury products with confidence. Key Problem Solved: Affordability of Luxury Products; Limited Access to Luxury Brands in India and online; A trusted and organised platform to sell your Luxury Products. Business Model: Added Here."
+        },
+        {
+          "section_title": "Traction",
+          "section_text": "Revenue: ARR (FY 23-24 - Rs. 3 Crore; FY 24-25 - Rs. 4.1 Crore); MRR (Rs. 40 Lakh). Key Metrics: Lifetime Unique Buyers - 4182 (Till January 2025); Lifetime Unique Sellers - 2101 (Till January 2025); Total Products Listed - 6452 (Till January 2025). Notable Partnerships: Ziniosa’s exclusive partnership with Tata Cliq Luxury to launch a preloved bags and belts platform on TCL’s website."
+        },
+        {
+          "section_title": "Leadership and Team",
+          "section_text": "Key Members and Roles: NA. Advisory Board Members: Pranav Sanghvi (Overall Growth and Funding); Arjun Vaidya (Overall Growth and Scaling); Preeti Sawhney (Branding & PR)."
+        },
+        {
+          "section_title": "Why Now",
+          "section_text": "Included in the pitch deck. Market Trends; Competitive Edge; Urgency/Opportunity."
+        },
+        {
+          "section_title": "Financials",
+          "section_text": "Funding Ask - Rs. 2.5 Crore. Structure - CCPS. Valuation Cap and Floor - Rs. 13.5 Crore pre-money valuation. Current Commitments - Rs. 1.1 Crore - IPV."
+        },
+        {
+          "section_title": "Risks and Mitigation",
+          "section_text": "Identified Risks: Logistics (Delays in pickups affect inventory and revenue). Buying Behaviour Waves (Predictable low-revenue periods like end of summer, monsoons, and March). Irregular Supply Cycles (Only one unit per SKU, restocking depends on secondhand market availability). Proposed Mitigation Strategies: Not detailed in this section."
+        }
+      ]
+    }
+  ],
+  "extracted_data": {
+    "company_info": {
+      "company_name": "Ziniosa",
+      "legal_entity": "Nithravya Pvt Ltd",
+      "founding_date": null,
+      "headquarters": null,
+      "employee_count": null,
+      "sector": "E-commerce",
+      "sub_sector": "Resale",
+      "product_description": "India’s Leading & Fastest-Growing Fashion Resale Service that allows customers to buy and consign luxury products."
+    },
+    "financials": {
+      "historical_metrics": [
+        {
+          "date": "2024-03-31",
+          "revenue_inr": 30000000,
+          "arr_inr": 30000000
+        },
+        {
+          "date": "2025-03-31",
+          "revenue_inr": 41000000,
+          "arr_inr": 41000000
+        }
+      ],
+      "current_snapshot": {
+        "revenue_inr": null,
+        "profit_inr": null,
+        "burn_rate_inr_monthly": null,
+        "arpu_inr": null,
+        "arr_inr": 41000000,
+        "mrr_inr": 4000000,
+        "gross_margin_percent": null
+      },
+      "unit_economics": {
+        "cltv_inr": 127755,
+        "cac_inr": 3100,
+        "meta_cac_inr": 764,
+        "cltv_to_cac_ratio": null
+      }
+    },
+    "market_sizing": {
+      "tam": null,
+      "sam": null,
+      "som": null,
+      "market_trends": null
+    },
+    "go_to_market": {
+      "growth_metrics": {
+        "user_growth_metrics": [
+          {
+            "date": "2025-01-31",
+            "unique_buyers": 4182
+          },
+          {
+            "date": "2025-01-31",
+            "unique_sellers": 2101
+          }
+        ],
+        "products_listed": {
+          "total_products": 6452,
+          "as_of_date": "2025-01-31"
+        },
+        "churn_rate_monthly_percent": null
+      },
+      "key_metrics_and_ratios": {
+        "revenue_growth_yoy_percent": null,
+        "revenue_growth_qoq_percent": null,
+        "net_dollar_retention_percent": null,
+        "gross_margin_percent": null
+      },
+      "competition": [
+        {
+          "name": "MyAlmari",
+          "business_model": "Preloved/Consignment Based Model"
+        },
+        {
+          "name": "Confidential Couture",
+          "business_model": "Preloved/Consignment Based Model",
+          "arr_inr": 28100000
+        },
+        {
+          "name": "Luxepolis",
+          "business_model": "Preloved/Consignment Based Model",
+          "arr_inr": 26200000
+        }
+      ]
+    },
+    "fundraising": {
+      "total_funding_to_date_inr": null,
+      "funding_round_details": [
+        {
+          "round_name": "Current Round",
+          "type": "CCPS",
+          "ask_inr": 25000000,
+          "pre_money_valuation_inr": 135000000,
+          "lead_investor": "IPV",
+          "committed_inr": 11000000
+        }
+      ],
+      "previous_rounds": []
+    },
+    "additional_info": {
+      "founders": [
+        {
+          "name": "Ashri Jaiswal",
+          "role": "Founder",
+          "education": [
+            "B.tech in IT - Jaypee Institute of Information Technology, Noida",
+            "Master’s in Engineering Management - The George Washington University, Washington DC"
+          ],
+          "experience": "Project Management Analyst in the US and India (3 years), Guest Mentor & Coach with UN Women, TedX Speaker",
+          "investments": [
+            "NOTO",
+            "Gladful"
+          ]
+        },
+        {
+          "name": "Varun Ramani",
+          "role": "Founder",
+          "education": [
+            "B.E in EC - MVJ College of Engineering, Bangalore"
+          ],
+          "experience": "Systems Integration Engineer in the US with Philips and Keithley Instruments"
+        }
+      ],
+      "advisory_board": [
+        {
+          "name": "Pranav Sanghvi",
+          "role": "Overall Growth and Funding"
+        },
+        {
+          "name": "Arjun Vaidya",
+          "role": "Overall Growth and Scaling"
+        },
+        {
+          "name": "Preeti Sawhney",
+          "role": "Branding & PR"
+        }
+      ],
+      "technology": {
+        "tech_stack": "Shopify"
+      },
+      "partnerships": [
+        "Tata Cliq Luxury"
+      ],
+      "risks": [
+        "Logistics: Delays in pickups from sellers",
+        "Buying Behaviour Waves: Predictable low-revenue periods",
+        "Irregular Supply Cycles: Restocking depends on secondhand market availability"
+      ]
+    }
+  },
+  "additional_metadata": {
+    "sector": "E-commerce",
+    "region": "India",
+    "data_source_quality": "medium",
+    "last_update": "2025-09-17T12:15:39Z"
+  },
+  "notes": []
+}

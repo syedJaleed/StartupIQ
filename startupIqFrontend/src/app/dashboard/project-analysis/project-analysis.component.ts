@@ -29,13 +29,57 @@ export class ProjectAnalysisComponent {
   projectId: string | null = null;
   project: any = null;
   dropBoxOpen = false;
+  viewMode: 'sync' | 'upload' = 'sync';
+  isLoading = true;
+  loadingSync = true;
 
   unsubscribe: (() => void) | null = null;
   syncJob: any = null; // 👈 holds realtime sync job data
+  analysisData: any;
+
+  dummyAnalysisData = {
+    risk_assessment: {
+      key_strengths: [
+        'Experienced team with domain expertise.',
+        'Addresses a clear pain point in operations.',
+        'Targeted at a growing market.',
+        'Automation reduces errors and saves time.',
+        'Integration with common tools for convenience.',
+      ],
+      risk_factors: [
+        'Dependence on accurate forecasting.',
+        'Pricing may limit adoption.',
+        'Competition from established players.',
+        'Integration risk with existing tools.',
+        'Sales cycle may be long in some segments.',
+      ],
+    },
+    ai_recommendations: [
+      {
+        area: 'Product',
+        title: 'Focus on forecast accuracy and test models.',
+        priority: 'HIGH',
+        impact: 'Better forecasts reduce costs and errors.',
+      },
+      {
+        area: 'Go-To-Market',
+        title: 'Offer a pilot or trial program.',
+        priority: 'HIGH',
+        impact: 'Accelerates adoption by showing clear value.',
+      },
+      {
+        area: 'Business',
+        title: 'Consider tiered pricing based on size/features.',
+        priority: 'MEDIUM',
+        impact: 'Increases accessibility for smaller clients.',
+      },
+    ],
+  };
 
   steps = [
     { key: 'file_analysis', label: 'File Analysis' },
     { key: 'team_agent', label: 'Team Agent' },
+    { key: 'business_analysis', label: 'Business Analysis' },
     { key: 'financial_stats_agent', label: 'Financial Stats Agent' },
     { key: 'final_agent', label: 'Final Agent' },
   ];
@@ -71,9 +115,15 @@ export class ProjectAnalysisComponent {
       console.log('Loaded project:', this.project);
       if (this.projectId) {
         this.listenToFileUpdates(this.projectId);
-        this.listenToSyncJob(this.projectId); // 👈 listen for sync updates
+        this.listenToSyncJob(this.projectId);
+        this.listenToAnalysisData(this.projectId);
       }
     }
+    this.isLoading = false;
+  }
+
+  toggleView(mode: 'sync' | 'upload') {
+    this.viewMode = mode;
   }
 
   private listenToFileUpdates(projectId: string) {
@@ -89,9 +139,27 @@ export class ProjectAnalysisComponent {
     });
   }
 
+  private listenToAnalysisData(projectId: string) {
+    const analysisDocRef = doc(this.firestore, 'analysis', projectId);
+    onSnapshot(analysisDocRef, (docSnap) => {
+      if (docSnap.exists()) {
+        const rawData = docSnap.data();
+        try {
+          this.analysisData = JSON.parse(rawData['business_analysis']);
+        } catch (e) {
+          console.error('Invalid JSON in business_analysis:', e);
+          this.analysisData = this.dummyAnalysisData;
+        }
+      } else {
+        this.analysisData = this.dummyAnalysisData;
+      }
+    });
+  }
+
   private listenToSyncJob(projectId: string) {
     const syncDocRef = doc(this.firestore, 'sync-job', projectId);
     onSnapshot(syncDocRef, (docSnap) => {
+      this.loadingSync = false;
       if (docSnap.exists()) {
         this.syncJob = docSnap.data();
         console.log('Realtime sync job:', this.syncJob);
