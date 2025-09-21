@@ -1,0 +1,36 @@
+{
+  "startup_id": "ziniosa_nithravya",
+  "long_term_prediction": {
+    "category": "success",
+    "probability": 1.0,
+    "projections": {
+      "revenue_5y_percent": 190.55324999999996,
+      "profit_5y_percent": 139.16691456000004,
+      "confidence_intervals": {},
+      "validation_metrics": {
+        "model": "heuristic_fallback"
+      }
+    }
+  },
+  "sentiment_analysis": {
+    "sentiment": "positive",
+    "score": 0.12
+  },
+  "statistical_analysis": {
+    "revenue_growth_yoy_percent": 30.0,
+    "revenue_growth_qoq_percent": 7.5,
+    "burn_rate_usd_monthly": null,
+    "customer_acquisition_cost_usd": 3100.0,
+    "lifetime_value_usd": 127755.0,
+    "cltv_to_cac_ratio": 41.21,
+    "payback_period_months": null,
+    "annual_recurring_revenue_usd": 41000000.0,
+    "gross_margin_percent": null,
+    "churn_rate_monthly_percent": null,
+    "net_dollar_retention_percent": null,
+    "user_growth_rate_percent": 32.5,
+    "profit_growth_yoy_percent": 24.0
+  },
+  "model_description": "Enhanced ML analysis for Ziniosa: Outcome prediction used LogisticRegression with hyperparameter tuning (F1-score: 0.75). Training data loaded from ./training_datasets/ with 12 samples. Time series analysis enhanced with exponential smoothing and robust statistics. Sentiment analysis applied enhanced VADER to 1 document sections with validation. Edge cases handled: negative growth, missing data, outliers via winsorization. Projections include confidence intervals and realistic capping (revenue ≤1500%, profit ≤1000%). All metrics validated and rounded to 2 decimal places. Full model performance metrics and traceability in explainability files.",
+  "explainability_file": "logs\\explainability_ziniosa_nithravya_20250920_203230.json"
+}

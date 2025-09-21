@@ -1,0 +1,410 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div *ngIf="isLoading" class="flex justify-center py-16">
+        <span class="loading loading-spinner loading-lg text-primary"></span>
+    </div>
+
+    <div *ngIf="!isLoading && project">
+        <!-- Header -->
+        <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center space-x-4">
+                <button (click)="navDashboard()" class="btn border-none p-2 hover:bg-base-content/10 rounded-lg">
+                    <i class="bi bi-arrow-left"></i>
+                </button>
+                <div>
+                    <h1 class="text-3xl font-bold">{{ project.companyInfo?.name }}</h1>
+                    <p class="text-base-content/60">{{ project.companyInfo?.industry }} · {{
+                        project.companyInfo?.fundingStage }}</p>
+                </div>
+            </div>
+
+            <!-- Toggle Buttons -->
+            <div class="flex space-x-3">
+                <button (click)="toggleView('sync')" class="btn" [ngClass]="[
+                        viewMode === 'sync' ? 'bg-primary/80' : 'btn-ghost',
+                        'rounded-lg',
+                        'shadow-md',
+                        'gap-2',
+                        viewMode === 'sync' ? 'text-base-100' : 'text-base text-sm'
+                    ]">
+                    <i class="bi bi-arrow-repeat"></i> Sync
+                </button>
+                <button (click)="toggleView('upload')" class="btn" [ngClass]="[
+                        viewMode === 'upload' ? 'bg-primary/80' : 'btn-ghost',
+                        'rounded-lg',
+                        'shadow-md',
+                        'gap-2',
+                        viewMode === 'upload' ? 'text-base-100' : 'text-base text-sm'
+                    ]">
+                    <i class="bi bi-upload"></i> Upload Files
+                </button>
+            </div>
+        </div>
+
+        <!-- Sync Section -->
+        <div *ngIf="viewMode === 'sync'" class="transition-all duration-500 ease-in-out">
+            <!-- Loading State -->
+            <div *ngIf="loadingSync; else syncContent" class="flex flex-col items-center py-10">
+                <span class="loading loading-spinner loading-lg text-primary"></span>
+                <p class="mt-4 text-base-content/70">Fetching sync status...</p>
+            </div>
+                    <div *ngIf="syncJob === null" class="flex flex-col items-center py-10 text-base-content/60">
+                        <i class="bi bi-hourglass-split text-4xl mb-3"></i>
+                        <p>No sync job found. Start one to begin analysis.</p>
+                        <button (click)="applySync()" class="btn bg-primary/80 text-base-100 btn-sm rounded-lg">Start Sync</button>
+                    </div>
+
+            <ng-template #syncContent>
+                <div *ngIf="syncJob;"
+                    class="p-6 bg-base-100 rounded-xl shadow-sm border border-base-content/20">
+
+                    <!-- Title -->
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-lg font-semibold text-base-content">Startup Sync Progress</h3>
+                        <button (click)="applySync()" [disabled]="syncJob && syncJob.status !== 'done'"
+                            class="btn bg-primary/80 text-base-100 btn-sm rounded-lg">
+                            <i class="bi bi-arrow-repeat mr-2"></i> Start Sync
+                        </button>
+                    </div>
+
+                    <!-- Steps Timeline -->
+                    <div class="flex flex-col lg:flex-row lg:justify-between lg:space-x-6 space-y-6 lg:space-y-0">
+                        <div *ngFor="let step of steps; let i = index" class="flex items-center lg:flex-1">
+                            <div class="flex flex-col items-center lg:flex-row lg:items-center w-full">
+                                <!-- Step Circle -->
+                                <div class="relative flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300"
+                                    [ngClass]="{
+                'bg-primary text-primary-content shadow-md animate-pulse': syncJob.current_step === step.key && syncJob.current_step_status !== 'completed',
+                'bg-success': isStepCompleted(step.key),
+                'bg-base-300 text-base-content/50': !isStepCompleted(step.key) && syncJob.current_step !== step.key
+              }">
+                                    <i *ngIf="isStepCompleted(step.key)" class="bi bi-check-lg text-lg"></i>
+                                    <span *ngIf="!isStepCompleted(step.key) && syncJob.current_step !== step.key">{{ i+1
+                                        }}</span>
+                                    <span
+                                        *ngIf="syncJob.current_step === step.key && syncJob.current_step_status !== 'completed'"
+                                        class="loading loading-spinner loading-xs absolute"></span>
+                                </div>
+
+                                <!-- Step Label -->
+                                <div class="mt-2 lg:mt-0 lg:ml-3 lg:text-left">
+                                    <p class="font-medium" [ngClass]="{
+                'text-primary': syncJob.current_step === step.key,
+                'text-content': isStepCompleted(step.key),
+                'text-base-content/70': !isStepCompleted(step.key) && syncJob.current_step !== step.key
+              }">
+                                        {{ step.label }}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Connector Line -->
+                            <div *ngIf="i < steps.length - 1" class="hidden lg:block flex-1 h-0.5 mx-3" [ngClass]="{
+              'bg-success': isStepCompleted(steps[i+1].key),
+              'bg-primary animate-pulse': syncJob.current_step === steps[i+1].key,
+              'bg-base-300': !isStepCompleted(steps[i+1].key)
+          }"></div>
+                        </div>
+                    </div>
+
+                    <!-- Progress Message -->
+                    <div class="mt-6 text-center">
+                        <p *ngIf="syncJob.status === 'in_progress' || syncJob.status === 'not_started'" class="text-base-content/70">
+                            🔄 Sync in progress... {{ syncJob.percentage }}%
+                        </p>
+                        <p *ngIf="syncJob.status === 'done'" class="font-medium">
+                            ✅ Sync completed successfully!
+                        </p>
+                        <!-- <p *ngIf="syncJob.status === 'not_started'" class="text-base-content/70">
+                            ⏳ Sync not started yet. Click "Start Sync" to begin.
+                        </p> -->
+                    </div>
+                </div>
+            </ng-template>
+
+            <!-- ✅ Analysis Data (only after sync is done) -->
+            <div *ngIf="syncJob.status === 'in_progress'" class="animate-pulse space-y-6 mt-6">
+                <!-- Investment Score Skeleton -->
+                <div class="bg-base-100 rounded-xl p-8 shadow-sm border border-base-content/20">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="h-6 w-40 bg-base-300 rounded"></div>
+                        <div class="h-10 w-20 bg-base-300 rounded"></div>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="h-4 bg-base-300 rounded w-full"></div>
+                        <div class="h-4 bg-base-300 rounded w-5/6"></div>
+                        <div class="h-4 bg-base-300 rounded w-4/6"></div>
+                    </div>
+                </div>
+
+                <!-- Stats Skeleton -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div *ngFor="let i of [1,2,3,4]"
+                        class="bg-base-100 rounded-xl p-6 shadow-sm border border-base-content/20">
+                        <div class="h-5 w-24 bg-base-300 rounded mb-3"></div>
+                        <div class="h-8 w-20 bg-base-300 rounded mb-2"></div>
+                        <div class="h-4 w-16 bg-base-300 rounded"></div>
+                    </div>
+                </div>
+
+                <!-- Risk & AI Skeleton -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="bg-base-100 rounded-xl p-6 shadow-sm border border-base-content/20 space-y-3">
+                        <div class="h-6 w-32 bg-base-300 rounded"></div>
+                        <div class="h-4 w-full bg-base-300 rounded"></div>
+                        <div class="h-4 w-5/6 bg-base-300 rounded"></div>
+                        <div class="h-4 w-4/6 bg-base-300 rounded"></div>
+                    </div>
+                    <div class="bg-base-100 rounded-xl p-6 shadow-sm border border-base-content/20 space-y-3">
+                        <div class="h-6 w-40 bg-base-300 rounded"></div>
+                        <div class="h-4 w-full bg-base-300 rounded"></div>
+                        <div class="h-4 w-5/6 bg-base-300 rounded"></div>
+                        <div class="h-4 w-4/6 bg-base-300 rounded"></div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="syncJob?.status === 'done'">
+                <!-- Investment Score -->
+                <div class="bg-base-100 rounded-xl p-8 shadow-sm border border-base-content/20 mt-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-2xl font-bold text-base-content/90">Investment Score</h2>
+                        <div class="text-4xl font-bold text-warning/90">7.2/10</div>
+                    </div>
+                    <p class="text-base-content/70 leading-relaxed">
+                        CloudSync shows promising early traction with rapid user growth and strong product-market fit
+                        signals.
+                        The team has strong design and product expertise, though business model validation is still
+                        early.
+                        Market timing appears favorable with increased remote work adoption.
+                    </p>
+                </div>
+
+                <!-- Stats -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
+                    <!-- Revenue -->
+                    <div class="bg-base-100 rounded-xl p-6 shadow-sm border border-base-content/20">
+                        <div class="flex items-center space-x-3 mb-4">
+                            <i class="bi bi-currency-dollar text-success"></i>
+                            <h3 class="font-semibold text-base-content/90">Revenue</h3>
+                        </div>
+                        <p class="text-2xl font-bold text-base-content/90">$180K</p>
+                        <p class="text-[13px] text-success/80 flex items-center space-x-1">
+                            <i class="bi bi-graph-up-arrow"></i>
+                            <span>0% growth</span>
+                        </p>
+                    </div>
+
+                    <!-- Users -->
+                    <div class="bg-base-100 rounded-xl p-6 shadow-sm border border-base-content/20">
+                        <div class="flex items-center space-x-3 mb-4">
+                            <i class="bi bi-people text-info/70"></i>
+                            <h3 class="font-semibold text-base-content/90">Users</h3>
+                        </div>
+                        <p class="text-2xl font-bold text-base-content/90">1,250</p>
+                        <p class="text-[13px] text-success/80 flex items-center space-x-1">
+                            <i class="bi bi-graph-up-arrow"></i>
+                            <span>180% growth</span>
+                        </p>
+                    </div>
+
+                    <!-- Funding -->
+                    <div class="bg-base-100 rounded-xl p-6 shadow-sm border border-base-content/20">
+                        <div class="flex items-center space-x-3 mb-4">
+                            <i class="bi bi-calendar4 text-primary/90"></i>
+                            <h3 class="font-semibold text-base-content/90">Funding</h3>
+                        </div>
+                        <p class="text-2xl font-bold text-base-content/90">$8.5M</p>
+                        <p class="text-[13px] text-base-content/60 flex items-center space-x-1">
+                            Series A <i class="bi bi-dot"></i> <span>3/15/2024</span>
+                        </p>
+                    </div>
+
+                    <!-- Team -->
+                    <div class="bg-base-100 rounded-xl p-6 shadow-sm border border-base-content/20">
+                        <div class="flex items-center space-x-3 mb-4">
+                            <i class="bi bi-people text-warning-content"></i>
+                            <h3 class="font-semibold text-base-content/90">Team</h3>
+                        </div>
+                        <p class="text-2xl font-bold text-base-content/90">28</p>
+                        <p class="text-[13px] text-success/80 flex items-center space-x-1">
+                            <i class="bi bi-graph-up-arrow"></i>
+                            <span>250% growth</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Risk Assessment & AI Recommendations -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
+                    <!-- Risk Assessment -->
+                    <div>
+                        <div class="bg-base-100 rounded-xl p-6 shadow-sm border border-base-content/20 space-y-6">
+                            <h2 class="text-xl font-bold text-base-content/90">Risk Assessment</h2>
+                            <div class="my-6">
+                                <!-- Strengths -->
+                                <h3 class="text-lg font-semibold text-success mb-4 flex items-center space-x-2">
+                                    <i class="bi bi-check-circle mr-1"></i> Key Strengths
+                                </h3>
+                                <ul class="mt-3 space-y-2">
+                                    <li *ngFor="let item of analysisData.risk_assessment.key_strengths"
+                                        class="p-3 rounded-lg bg-success/5 flex items-center gap-2 text-sm text-base-content/80">
+                                        <i class="bi bi-check2-circle"></i> {{ item }}
+                                    </li>
+                                </ul>
+
+                                <!-- Risks -->
+                                <div class="mt-6">
+                                    <h3 class="font-semibold text-error flex items-center gap-2">
+                                        <i class="bi bi-exclamation-triangle"></i> Risk Factors
+                                    </h3>
+                                    <ul class="mt-3 space-y-2">
+                                        <li *ngFor="let item of analysisData.risk_assessment.risk_factors"
+                                            class="p-3 rounded-lg bg-error/5 text-sm text-base-content/80 flex items-center gap-2">
+                                            <i class="bi bi-exclamation-circle"></i> {{ item }}
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AI Recommendations -->
+                    <div>
+                        <div class="bg-base-100 rounded-xl p-6 shadow-sm border border-base-content/20 space-y-6">
+                            <h2 class="text-xl font-bold text-base-content/90">AI Recommendations</h2>
+                            <div class="space-y-4">
+                                <div *ngFor="let rec of analysisData?.ai_recommendations"
+                                    class="p-4 rounded-lg flex flex-col gap-2 bg-base-100 border border-base-content/20 hover:shadow-md transition-shadow">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center gap-2">
+                                            <div class="flex items-center h-8 w-8 gap-2 font-semibold text-base-content/90 rounded-lg justify-center"
+                                                [ngClass]="[rec.priority === 'HIGH' ? 'bg-error/20' : '',
+                               rec.priority === 'MEDIUM' ? 'bg-warning/20' : '',
+                               rec.priority === 'LOW' ? 'bg-success/20' : '']">
+                                                <i class="bi" [ngClass]="{
+                        'bi-bullseye text-error': rec.priority === 'HIGH',
+                        'bi-clock text-warning': rec.priority === 'MEDIUM',
+                        'bi-lightbulb text-success': rec.priority === 'LOW'
+                      }"></i>
+                                            </div>
+                                            <span class="font-bold">{{ rec.area }}</span>
+                                        </div>
+                                        <span class="badge border-none rounded-xl text-[0.72rem] font-semibold"
+                                            [ngClass]="{
+                    'badge-error bg-error': rec.priority === 'HIGH',
+                    'badge-warning bg-warning': rec.priority === 'MEDIUM',
+                    'badge-success bg-success': rec.priority === 'LOW'
+                  }">
+                                            {{ rec.priority }}
+                                        </span>
+                                    </div>
+                                    <div class="text-base-content/80">
+                                        <span class="text-sm">{{ rec.title }}</span>
+                                    </div>
+                                    <div class="text-[12px] p-0 italic text-base-content/60">
+                                        Impact: {{ rec.impact }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Upload Section -->
+        <div *ngIf="viewMode === 'upload'" class="transition-all duration-500 ease-in-out">
+            <div class="bg-base-100 rounded-xl p-4 shadow-sm border">
+                <h3 class="text-xl font-semibold mb-4">Upload Startup Materials</h3>
+                <div class="border-2 border-dashed rounded-lg p-6 text-center cursor-pointer hover:bg-base-200"
+                    (click)="fileInput.click()" (drop)="onFileDrop($event)" (dragover)="onDragOver($event)">
+                    <input type="file" multiple hidden #fileInput (change)="onFilesSelected($event)" />
+                    <p class="text-sm">Drop files here or click to upload</p>
+                    <p class="text-xs text-base-content/70">Supports PDF, DOCX, TXT, MP3</p>
+                </div>
+            </div>
+            <div *ngIf="dropBoxOpen" class="bg-base-100 rounded-xl p-4 shadow-sm border border-base-content/20">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-xl font-semibold">Upload Startup Materials</h3>
+                    <button class="btn btn-sm btn-circle btn-ghost" (click)="openDropBox()">✕</button>
+                </div>
+                <div class="mt-6 border-2 border-dashed rounded-lg p-6 text-center cursor-pointer hover:bg-base-200"
+                    (click)="fileInput.click()" (drop)="onFileDrop($event)" (dragover)="onDragOver($event)">
+                    <input type="file" multiple hidden #fileInput (change)="onFilesSelected($event)" />
+                    <div class="flex flex-col items-center space-y-2">
+                        <svg class="w-12 h-12 text-primary" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M7 16a4 4 0 01-.88-7.903A5.002 5.002 0 0115 6h1a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                        </svg>
+                        <p class="text-sm text-base-content">
+                            Drop files here or click to upload
+                        </p>
+                        <p class="text-xs text-base-content/70">
+                            Supports PDF pitch decks, DOCX updates, TXT transcripts, and MP3 audio
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h4 class="font-semibold mb-3">Pending Uploads</h4>
+                    <button (click)="saveFiles()" class="btn border-none hover:bg-base-content/20 rounded-lg"
+                        [disabled]="uploadedFiles.length === 0">
+                        Save Files <i class="bi bi-arrow-right"></i>
+                    </button>
+                </div>
+
+                <div class="overflow-y-auto max-h-60">
+                    <div *ngFor="let file of uploadedFiles; let i = index"
+                        class="flex items-center p-3 mb-2 rounded-lg bg-base-300">
+                        <!-- File Icon -->
+                        <svg class="w-8 h-8 text-primary mr-3" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M7 21h10a2 2 0 002-2V9.414a2 2 0 00-.586-1.414l-4.414-4.414A2 2 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                        </svg>
+
+                        <!-- File Info -->
+                        <div class="flex-1">
+                            <p class="text-sm font-medium truncate">{{ file.name }}</p>
+                            <p class="text-xs text-base-content/70">
+                                {{ getFileSize(file.size) }}
+                            </p>
+                        </div>
+
+                        <!-- Remove Button -->
+                        <button type="button" class="btn btn-xs btn-error bg-error/20 border-none shadow-none"
+                            (click)="removeFile(i)">
+                            <i class="bi bi-trash text-error"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6" *ngIf="uploadedFiles.length === 0 && savedFiles.length === 0">
+                <p class="text-center text-base-content/60">No files uploaded yet.</p>
+            </div>
+            <!-- Already Saved -->
+            <div class="mt-8" *ngIf="savedFiles.length > 0">
+                <h4 class="font-semibold mb-3">Files in Project</h4>
+                <div class="space-y-2 max-h-60 overflow-y-auto">
+                    <div *ngFor="let file of savedFiles" class="flex items-center p-3 rounded-lg bg-base-200">
+                        <svg class="w-6 h-6 text-primary mr-3" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M7 21h10a2 2 0 002-2V9.414a2 2 0 00-.586-1.414l-4.414-4.414A2 2 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                        </svg>
+
+                        <a [href]="file" target="_blank">
+                            {{ getFileNameFromUrl(file) }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="!isLoading && !project" class="text-center text-red-500 py-12">
+        Project not found.
+    </div>
+</div>

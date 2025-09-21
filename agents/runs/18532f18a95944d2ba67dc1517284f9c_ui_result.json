@@ -1,0 +1,74 @@
+{
+  "ts": "2025-09-21T10:26:56.372813Z",
+  "run_id": "18532f18a95944d2ba67dc1517284f9c",
+  "model": "gemini-2.0-flash-lite-001",
+  "input": {
+    "idea_text": "Scheduling assistant for grocery retail that auto-builds weekly shift rosters from demand forecasts and posts to WhatsApp for approvals.",
+    "target_market": "Frontline retail managers in Indian grocery chains (50–500 employees per store)",
+    "alternatives": "Excel rosters, WhatsApp messages, manual copy-paste, basic POS exports",
+    "pricing": "SaaS $199/store/month",
+    "team": "Ex-Flipkart ops lead + ML engineer with workforce planning experience"
+  },
+  "output": {
+    "risk_assessment": {
+      "key_strengths": [
+        "Experienced team with relevant domain expertise.",
+        "Addresses a clear pain point in a large market.",
+        "SaaS model provides recurring revenue.",
+        "Automated scheduling saves time and reduces errors.",
+        "WhatsApp integration leverages existing communication channels.",
+        "Demand forecasting adds value over basic solutions."
+      ],
+      "risk_factors": [
+        "Reliance on accurate demand forecasting models.",
+        "Competition from established workforce management software.",
+        "Pricing may be high for some target customers.",
+        "Reliance on WhatsApp for approvals may have limitations.",
+        "Sales cycle may be long due to enterprise sales.",
+        "Data privacy and security concerns in India."
+      ]
+    },
+    "ai_recommendations": [
+      {
+        "area": "Product",
+        "title": "Prioritize integrations with popular POS systems.",
+        "priority": "HIGH",
+        "impact": "Seamless data import and export will improve user adoption."
+      },
+      {
+        "area": "Go-To-Market",
+        "title": "Offer a free trial or freemium plan to drive adoption.",
+        "priority": "HIGH",
+        "impact": "Allowing users to experience the value will drive conversions."
+      },
+      {
+        "area": "Business",
+        "title": "Focus on customer success to reduce churn.",
+        "priority": "MEDIUM",
+        "impact": "Proactive support and training will increase customer retention."
+      }
+    ],
+    "metrics": [
+      {
+        "name": "Problem Severity",
+        "score": 9,
+        "reason": "Manual scheduling is time-consuming and error-prone for retail managers."
+      },
+      {
+        "name": "Solution Uniqueness",
+        "score": 7,
+        "reason": "Automated scheduling with WhatsApp integration offers a differentiated user experience."
+      },
+      {
+        "name": "Idea Viability",
+        "score": 8,
+        "reason": "The team's expertise and SaaS model support viability."
+      },
+      {
+        "name": "Technical Feasibility",
+        "score": 8,
+        "reason": "Demand forecasting and WhatsApp integration are technically feasible."
+      }
+    ]
+  }
+}
